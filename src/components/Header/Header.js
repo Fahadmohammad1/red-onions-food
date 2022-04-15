@@ -1,18 +1,30 @@
+import { signOut } from "firebase/auth";
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
+import auth from "../../firebase.init";
 import logo from "../../images/logos/logo2.png";
 
 const Header = () => {
+  const [user, loading] = useAuthState(auth);
+  if (loading) {
+    console.log("loading");
+  }
+
   const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    signOut(auth);
+  };
   return (
-    <div className=" sticky top-0 z-10 ">
+    <div className=" sticky top-0 bg-white">
       <div className="container mx-auto navbar bg-base-100">
         <div className="flex-1 ">
           <img
             onClick={() => {
               navigate("/");
             }}
-            className="w-52 cursor-pointer"
+            className="w-56 cursor-pointer"
             src={logo}
             alt=""
           />
@@ -53,19 +65,25 @@ const Header = () => {
               </div>
             </div>
           </div>
-          <Link to="/login" className="font-bold mx-2">
-            Login
-          </Link>
-          <button className="btn rounded-full mx-2 bg-[#F91944]">
+          {user ? (
+            ""
+          ) : (
+            <Link to="/login" className="font-bold mx-2">
+              Login
+            </Link>
+          )}
+          <button
+            onClick={() => {
+              navigate("/signUp");
+            }}
+            className="btn rounded-full mx-2 bg-[#F91944]"
+          >
             Sign Up
           </button>
           <div className="dropdown dropdown-end">
             <label tabIndex="0" className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
-                <img
-                  src="https://api.lorem.space/image/face?hash=33791"
-                  alt=""
-                />
+                <img src={user?.photoURL} alt="" />
               </div>
             </label>
             <ul
@@ -82,7 +100,9 @@ const Header = () => {
                 <a href="/">Settings</a>
               </li>
               <li>
-                <a href="/">Logout</a>
+                <Link onClick={handleSignOut} to="/">
+                  Logout
+                </Link>
               </li>
             </ul>
           </div>
