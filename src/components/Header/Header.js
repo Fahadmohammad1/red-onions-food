@@ -1,12 +1,21 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../images/logos/logo2.png";
 
 const Header = () => {
+  const navigate = useNavigate();
   return (
-    <div className="container mx-auto">
-      <div className="navbar bg-base-100">
-        <div className="flex-1">
-          <img className="w-52" src={logo} alt="" />
+    <div className=" sticky top-0 z-10 ">
+      <div className="container mx-auto navbar bg-base-100">
+        <div className="flex-1 ">
+          <img
+            onClick={() => {
+              navigate("/");
+            }}
+            className="w-52 cursor-pointer"
+            src={logo}
+            alt=""
+          />
         </div>
         <div className="flex-none">
           <div className="dropdown dropdown-end">
@@ -44,6 +53,12 @@ const Header = () => {
               </div>
             </div>
           </div>
+          <Link to="/login" className="font-bold mx-2">
+            Login
+          </Link>
+          <button className="btn rounded-full mx-2 bg-[#F91944]">
+            Sign Up
+          </button>
           <div className="dropdown dropdown-end">
             <label tabIndex="0" className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
